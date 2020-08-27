@@ -24,22 +24,24 @@ class Scraper
   def self.scrape_profile_page(profile_url)
     info = Nokogiri::HTML(open(profile_url))
 
+    info_holder = info.css(".social-icon-container a").collect{|sm| sm.attribute("href").value}
+
     profile = {}
 
-    info.css(".social-icon-container").collect do |p|
+    info_holder.each do |p|
       if p.include?("twitter")
-        profile[:twitter] = info.css(".social-icon-container")[0]["href"]
+        profile[:twitter] = p
       elsif p.include?("linkedin")
-        profile[:linkedin] = info.css(".social-icon-container")[0]["href"]
+        profile[:linkedin] = p
       elsif p.include?("github")
-        profile[:github] = info.css(".social-icon-container")[0]["href"]
+        profile[:github] = p
       elsif p.include?(".com")
-        profile[:blog] = info.css(".social-icon-container a")[0]["href"]
+        profile[:blog] = p
       end
     end
 
-    profile[:profile_quote] = info.css(".vitals-text-container.profile-quote").text
-    profile[:bio] = info.css(".details-container.description-holder p").text
+    profile[:profile_quote] = info.css(".profile-quote").text
+    profile[:bio] = info.css("div.description-holder p").text
 
     profile
     
