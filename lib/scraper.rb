@@ -28,7 +28,13 @@ class Scraper
 
     info.css(".social-icon-container").collect do |p|
       if p.include?("twitter")
-          profile[:twitter] = 
+        profile[:twitter] = info.css(".social-icon-container")[0]["href"]
+      elsif p.include?("linkedin")
+        profile[:linkedin] = info.css(".social-icon-container")[0]["href"]
+      elsif p.include?("github")
+        profile[:github] = info.css(".social-icon-container")[0]["href"]
+      elsif p.include?(".com")
+
     
   end
 
