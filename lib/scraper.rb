@@ -34,7 +34,14 @@ class Scraper
       elsif p.include?("github")
         profile[:github] = info.css(".social-icon-container")[0]["href"]
       elsif p.include?(".com")
+        profile[:blog] = info.css(".social-icon-container a")[0]["href"]
+      end
+    end
 
+    profile[:profile_quote] = info.css(".vitals-text-container.profile-quote").text
+    profile[:bio] = info.css(".details-container.description-holder p").text
+
+    profile
     
   end
 
